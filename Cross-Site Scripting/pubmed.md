@@ -26,6 +26,8 @@ Screenshot 2 – JavaScript alert successfully executed.
 
 <img width="1912" height="970" alt="image" src="https://github.com/user-attachments/assets/236f321e-dd20-442c-b830-195ad6ccaf98" />
 
+The alert confirms that the browser interpreted the reflected input as executable JavaScript during testing.
+
 Screenshot 3 – Reflected payload visible in the page source.
 
 <img width="1911" height="960" alt="image" src="https://github.com/user-attachments/assets/460b13e5-27d9-4ee5-9934-8f9081a28735" />
