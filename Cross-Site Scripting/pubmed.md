@@ -4,7 +4,7 @@ Reflected XSS - PubMed: National Library of Medicine Search Builder
 ## Description
 **Affected URL:** https://pubmed.pwnedbox.site/
 
-The search functionality is vulnerable to Reflected Cross-Site Scripting (XSS). User-controlled input through the `term` parameter is reflected into the search results page without proper output encoding, allowing injected JavaScript to execute in the visitor's browser.
+The search functionality is vulnerable to Reflected Cross-Site Scripting (XSS). User-controlled input through the `term` parameter is reflected into the search results page without proper output encoding, allowing injected JavaScript to execute in the visitor's browser.The issue occurs when specially crafted search input is processed and displayed in the response. Proper output encoding is required to prevent this behavior.
 
 ## Steps to Reproduce
 
