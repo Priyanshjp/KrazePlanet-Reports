@@ -14,7 +14,7 @@ The `q` parameter was not directly visible in the form. After identifying it, a 
 2. Observe the visible First Name and Last Name input fields.
 3. Run parameter discovery using `x8scan` against the target URL.
 4. Identify the additional GET parameter `q` in the transformed URL.
-5. Inject the XSS payload into the `q` parameter.
+5. Inject the XSS payload `Priyanshxop'"<><ScRipT>alert("XSS");</ScRipT>` into the `q` parameter.
 6. Open the crafted URL in a browser.
 7. Observe the JavaScript alert execution.
 8. Inspect the page source and verify that the supplied payload is reflected inside the page heading.
