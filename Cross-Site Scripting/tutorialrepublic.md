@@ -7,7 +7,7 @@ Reflected XSS - TutorialRepublic: Web Development Reference Search
 The search functionality is vulnerable to Reflected Cross-Site Scripting (XSS). The application reflects user-supplied input from the `q` parameter into the search result page without proper output encoding. As a result, an attacker can inject JavaScript that executes in a visitor's browser when the crafted URL is opened.
 
 ## Steps to Reproduce
-1. Open https://tutorialrepublic.pwnedbox.site/ and navigate to the search functionality.
+1. Open tutorialrepublic.pwnedbox.site and navigate to the search functionality.
 2. Inject the XSS payload into the `q` parameter: `Priyanshxop'"<><script>alert(1)</script>`.
 3. Submit the request and observe the JavaScript alert.
 4. Inspect the page source and observe the payload reflected inside the search result message.
