@@ -16,6 +16,8 @@ The search functionality is vulnerable to Reflected Cross-Site Scripting (XSS). 
    
 ## POC (Proof of Concept)
 
+The behavior was reproducible during testing in the provided lab environment.
+
 Screenshot 1 – XSS payload entered in the search box.
 
 <img width="1916" height="960" alt="image" src="https://github.com/user-attachments/assets/3376c568-ebb5-4ba9-8657-fd1ce30a4d45" />
