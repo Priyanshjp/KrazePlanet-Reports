@@ -10,7 +10,7 @@ The application is vulnerable to Reflected Cross-Site Scripting (XSS) through th
 
 
 1. Open https://search.pwnedbox.site/ in your browser.
-2. Enter a test payload in the First Name and Last Name fields.
+2. Enter a test payload `Priyanshxop'"<><script>alert(1)</script>` in the First Name and Last Name fields.
 3. Submit the form and observe the JavaScript alert.
 4. Inspect the URL and identify the `fname` and `lname` parameters.
 5. Open the page source and verify that the payload is reflected inside both input fields.
