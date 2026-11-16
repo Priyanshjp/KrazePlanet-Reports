@@ -4,6 +4,8 @@ Reflected XSS - GIGW: Government Website Guidelines Portal
 ## Description
 **Affected URL:** https://guidelines.pwnedbox.site/index.php?s=
 
+The `s` parameter is vulnerable to Reflected XSS because user input is reflected without proper output encoding, allowing JavaScript execution in the browser.
+
 ## Steps to Reproduce
 
 1. Open https://guidelines.pwnedbox.site/index.php?s= in the browser.
