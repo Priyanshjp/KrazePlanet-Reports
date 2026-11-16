@@ -13,7 +13,7 @@ The lack of HTML attribute encoding allowed an attacker to inject HTML and JavaS
 
 1. Open https://assets.pwnedbox.site/.
 2. Locate the Filter input field on the Community page.
-3. Enter the crafted XSS payload into the filter field.
+3. Enter the crafted XSS payload `Priyanshxop'"<><ScRipT>confirm("XSS");</ScRipT>` into the filter field.
 4. Submit the search request.
 5. Observe the JavaScript confirmation dialog.
 6. Inspect the page source and locate the `data-query` attribute.
