@@ -10,12 +10,15 @@ A crafted input containing HTML and JavaScript markup was submitted to evaluate 
 
 ## Steps to Reproduce
 
-1. Open https://checkout.pwnedbox.site/.
-2. Identify the GET parameters using x8scan.
-3. Select the `cat` parameter for testing.
-4. Submit a crafted HTML and JavaScript payload `"Priyanshxop'"<><script>alert(1)</script>` through `cat`.
-5. Observe the response and reflected input on the page.
-6. Inspect the page source to verify how the supplied value is handled.
+1. Identify the GET parameters of `https://checkout.pwnedbox.site/` using x8scan.
+2. Select the `cat` parameter for testing.
+3. Open the following crafted URL in a browser:
+
+   [https://checkout.pwnedbox.site/?cat=Priyanshxop%27%22%3C%3EScRipT%3Ea%5Cu006cert(1)%3C/ScRipT%3E](https://checkout.pwnedbox.site/?cat=Priyanshxop%27%22%3C%3E%3CScRipT%3Ea\u006cert(1)%3C/ScRipT%3E)
+
+4. Allow the page to load with the crafted `cat` parameter.
+5. Observe how the supplied value is reflected in the page response.
+6. Inspect the page source and verify how the `cat` parameter is handled.
 
 ## POC (Proof of Concept)
 
@@ -25,24 +28,25 @@ Screenshot 1 – x8scan identifies the available GET parameters.
 
 Screenshot 2 – Crafted input submitted through the `cat` parameter.
 
-<img width="1918" height="966" alt="image" src="https://github.com/user-attachments/assets/4e870a48-9ef0-4d95-b385-5f411c0a5f95" />
+<img width="1918" height="966" alt="image" src="https://github.com/user-attachments/assets/6fd22784-3db7-4e2c-ab34-bb9b92ee1db0" />
 
 Screenshot 3 – Reflected input visible in the browser response.
 
-<img width="1917" height="968" alt="image" src="https://github.com/user-attachments/assets/dde873d8-d04e-4362-bd17-bcc3d3a4a17d" />
+<img width="1918" height="963" alt="image" src="https://github.com/user-attachments/assets/d9f26f94-78e2-4dad-a142-af4b707d1fbb" />
 
 Screenshot 4 – Page source showing the reflected input.
 
-<img width="1918" height="962" alt="image" src="https://github.com/user-attachments/assets/931dadeb-2f23-4bff-a8ae-5c84700e5dc7" />
+<img width="1917" height="961" alt="image" src="https://github.com/user-attachments/assets/a5484127-770e-4410-a735-8923093c6f63" />
+
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- **Potential Script Injection:** If the reflected input reaches an executable HTML context, an attacker may be able to execute JavaScript.
-- **Page Manipulation:** Unsafe handling of reflected input may allow injected markup to alter page content.
-- **Targeted Attacks:** If script execution is confirmed, attackers may craft malicious URLs targeting visitors.
 
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Encode all user-controlled values before inserting them into HTML responses.
-2. **Input Validation:** Validate the `cat` parameter and reject unexpected HTML or script markup where it is not required.
-3. **Content Security Policy:** Apply a restrictive CSP and avoid relying solely on blacklist-based filtering.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
