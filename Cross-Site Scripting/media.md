@@ -10,14 +10,15 @@ Source inspection also revealed that the username is inserted into the profile l
 
 ## Steps to Reproduce
 
-1. Open https://media.pwnedbox.site/.
-2. Identify the `username` GET parameter.
-3. Submit the following payload through the parameter: `Priyanshxop'"<><script>alert(1)</script>`
-4. Load the crafted URL in the browser.
-5. Observe the JavaScript alert displaying `1`.
-6. Inspect the page source and locate the reflected username in the profile link.
-7. Verify that the injected content appears inside the `href` attribute.
+1. Open the following crafted URL in a browser:
 
+   https://media.pwnedbox.site/?username=Priyanshxop%27%22%3C%3E%3Cscript%3Ealert(1)%3C/script%3E
+
+2. Allow the page to load with the crafted value supplied through the `username` parameter.
+3. Observe the JavaScript alert displaying `1`.
+4. Dismiss the alert.
+5. Inspect the page source and locate the profile link.
+6. Verify that the injected content is reflected inside the link's `href` attribute without proper HTML attribute encoding.
 ## POC (Proof of Concept)
 
 Screenshot 1 – x8scan output showing the transformed URL and `username` parameter.
@@ -38,13 +39,13 @@ Screenshot 4 – Page source showing the injected payload reflected inside the p
 
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- **Arbitrary JavaScript Execution:** An attacker may execute JavaScript in a victim's browser by sending a crafted URL.
-- **Phishing and Content Manipulation:** Malicious scripts may modify page content or display deceptive elements.
-- **Targeted User Attacks:** Attackers may distribute crafted links to target users and exploit the vulnerability when they visit the URL.
-  
+
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Apply proper HTML attribute encoding before inserting user-controlled values into `href` attributes.
-2. **Input Validation:** Validate and safely handle the `username` GET parameter, rejecting unexpected HTML and script content where appropriate.
-3. **Content Security Policy:** Implement a restrictive CSP and avoid relying on input filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
