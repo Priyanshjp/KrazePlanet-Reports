@@ -9,11 +9,16 @@ The application is vulnerable to Reflected Cross-Site Scripting (XSS) through th
 ## Steps to Reproduce
 
 
-1. Open https://search.pwnedbox.site/ in your browser.
-2. Enter a test payload `Priyanshxop'"<><script>alert(1)</script>` in the First Name and Last Name fields.
-3. Submit the form and observe the JavaScript alert.
-4. Inspect the URL and identify the `fname` and `lname` parameters.
-5. Open the page source and verify that the payload is reflected inside both input fields.
+1. Open the following crafted URL in a browser:
+
+   https://search.pwnedbox.site/?fname=Priyanshxop%27%22%3C%3E%3Cscript%3Ealert(1)%3C%2Fscript%3E&lname=Priyanshxop%27%22%3C%3E%3Cscript%3Ealert(1)%3C%2Fscript%3E
+
+2. Allow the page to load with the crafted payloads supplied through the `fname` and `lname` parameters.
+3. Observe the JavaScript alert displaying `1`.
+4. Dismiss the alert.
+5. Inspect the URL and verify that both `fname` and `lname` parameters contain the supplied payload.
+6. Inspect the page source and locate the First Name and Last Name input fields.
+7. Verify that the injected values are reflected inside both input fields without proper HTML attribute encoding.
 
 ## POC (Proof of Concept)
 
@@ -31,13 +36,13 @@ Screenshot 3 – Reflected payload visible in both HTML input fields in page sou
 
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- Execute JavaScript in a visitor's browser.
-- Manipulate page content or input fields.
-- Conduct phishing attacks using injected content.
 
 ## Remediation
-
-1. **Output Encoding:** Properly HTML-attribute-encode user input before rendering it.
-2. **Input Validation:** Validate and sanitize both GET parameters.
-3. **Content Security Policy:** Implement a restrictive CSP to reduce the impact of script injection.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
