@@ -8,12 +8,18 @@ The application is vulnerable to Reflected Cross-Site Scripting (XSS) through th
 
 ## Steps to Reproduce
 
-1. Open https://feedback.pwnedbox.site/.
-2. Enter a crafted value into the First Name and Last Name fields.
-3. Use the following payload: `Priyanshxop'"<><ScRipT>alert(1)</ScRipT>`
-4. Submit the form.
-5. Observe the JavaScript alert in the browser.
-6. Inspect the page source and verify that the injected payload is reflected inside both input fields.
+## Steps to Reproduce
+
+1. Open the following crafted URL in a browser:
+
+   https://feedback.pwnedbox.site/?fname=Priyanshxop&lname=Priyanshxop%27%22%3C%3E%3CScRipT%3Ealert%281%29%3C%2FScRipT%3E
+
+2. Allow the page to load with the crafted `fname` and `lname` parameters.
+3. Observe the JavaScript alert displaying `1`.
+4. Click **OK** to dismiss the alert.
+5. Inspect the page source.
+6. Locate the reflected `fname` and `lname` values.
+7. Verify that the supplied payload is reflected inside both input fields without proper HTML encoding.
 
 ## POC (Proof of Concept)
 
@@ -31,15 +37,13 @@ Screenshot 4 – HTML source showing the reflected payload.
 
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- Execute arbitrary JavaScript in a visitor's browser.
-- Manipulate page content and form elements.
-- Potentially conduct phishing attacks.
-- Abuse the vulnerability through crafted links.
 
 ## Remediation
-
-1. Apply context-aware HTML attribute encoding.
-2. Validate user input on the server side.
-3. Avoid relying on case-sensitive blacklist filtering.
-4. Implement a restrictive Content Security Policy (CSP).
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
