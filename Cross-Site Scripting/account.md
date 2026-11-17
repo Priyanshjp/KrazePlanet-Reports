@@ -33,14 +33,15 @@ Screenshot 3 – Page source shows HTML-encoded `fname` and unescaped payload re
 
 <img width="1918" height="955" alt="image" src="https://github.com/user-attachments/assets/cefa5110-5252-45c8-96c1-d587d6d7c15d" />
 
-## Impact
 
-- **JavaScript Execution:** An attacker may execute JavaScript in a victim's browser through a crafted URL if the injected event handler executes.
-- **Phishing and Content Manipulation:** An attacker may manipulate page content or display deceptive elements.
-- **Victim-Targeted Attacks:** Crafted links may be distributed to users to trigger the reflected XSS when opened.
+## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
+
 
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Apply proper HTML attribute encoding to all user-controlled values before inserting them into input elements.
-2. **Consistent Parameter Handling:** Ensure `fname` and `lname` use the same secure validation and output-encoding mechanisms.
-3. **Content Security Policy:** Implement a restrictive Content Security Policy and avoid relying on function-name or blacklist-based filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
