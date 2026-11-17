@@ -13,11 +13,16 @@ Testing revealed that the parameter value was reflected directly into the `href`
 1. Run `x8scan` against https://go.pwnedbox.site/ to discover GET parameters.
 2. Identify the `returnTo` parameter in the transformed URL.
 3. Supply the crafted XSS payload `Priyanshxop'"<><ScRipT>confirm("XSS");</ScRipT>` through the `returnTo` parameter.
-4. Open the crafted URL in a browser.
-5. Observe the Shopify-style account confirmation page.
-6. Observe the JavaScript confirmation dialog displaying `XSS`.
-7. Inspect the page source and locate the Cancel & return link.
-8. Verify that the injected payload is reflected inside the link's `href` attribute.
+4. Open the following crafted URL in a browser:
+
+    https://go.pwnedbox.site/?returnTo=Priyanshxop%27%22%3C%3EScRipT%3Econfirm(%22XSS%22);%3C/ScRipT%3E
+   
+6. Allow the Shopify-style account confirmation page to load.
+7. Observe the JavaScript confirmation dialog displaying XSS.
+8. Dismiss the confirmation dialog.
+9. Inspect the page source and locate the Cancel & return link.
+10. Verify that the injected payload is reflected inside the link's href attribute.
+
 
 ## POC (Proof of Concept)
 
@@ -39,13 +44,13 @@ Screenshot 4 – Page source confirms the injected payload is reflected inside t
 
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- **Arbitrary JavaScript Execution:** An attacker may execute JavaScript in a victim's browser through a specially crafted URL.
-- **Phishing and UI Manipulation:** An attacker may create deceptive page elements or manipulate displayed content.
-- **Victim-Targeted Attacks:** Malicious links may be distributed to users to trigger the reflected XSS when opened.
 
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Properly HTML-attribute-encode the `returnTo` parameter before inserting it into the `href` attribute.
-2. **URL Validation:** Validate redirect destinations against an allowlist of trusted URLs and reject unexpected or malformed values.
-3. **Content Security Policy:** Implement a restrictive Content Security Policy and avoid relying on blacklist-based filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
