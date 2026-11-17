@@ -10,14 +10,19 @@ The `q` parameter was not directly visible in the form. After identifying it, a 
 
 ## Steps to Reproduce
 
-1. Open `https://docs.pwnedbox.site/`.
-2. Observe the visible First Name and Last Name input fields.
-3. Run parameter discovery using `x8scan` against the target URL.
-4. Identify the additional GET parameter `q` in the transformed URL.
-5. Inject the XSS payload `Priyanshxop'"<><ScRipT>alert("XSS");</ScRipT>` into the `q` parameter.
-6. Open the crafted URL in a browser.
-7. Observe the JavaScript alert execution.
-8. Inspect the page source and verify that the supplied payload is reflected inside the page heading.
+## Steps to Reproduce
+
+1. Run parameter discovery against `https://docs.pwnedbox.site/` using x8scan.
+2. Identify the additional GET parameter `q`.
+3. Open the following crafted URL in a browser:
+
+   https://docs.pwnedbox.site/?q=Priyanshxop%27%22%3C%3E%3CScRipT%3Ealert(%22XSS%22);%3C/ScRipT%3E
+
+4. Allow the page to load with the crafted `q` parameter.
+5. Observe the JavaScript alert displaying `XSS`.
+6. Click **OK** to dismiss the alert.
+7. Inspect the page source.
+8. Verify that the supplied payload is reflected inside the page heading.
 
 ## POC (Proof of Concept)
 
@@ -38,13 +43,13 @@ Screenshot 4 – Page source confirms that the injected payload is reflected ins
 <img width="1918" height="962" alt="image" src="https://github.com/user-attachments/assets/d0d79d51-9128-44b5-841a-c027721e1e9e" />
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- **Arbitrary JavaScript Execution:** An attacker may execute JavaScript in a victim's browser through a crafted URL.
-- **Phishing and Content Manipulation:** An attacker may modify displayed page content or create deceptive elements.
-- **Victim-Targeted Attacks:** Specially crafted links may be distributed to users to trigger the reflected XSS payload when opened.
 
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Properly HTML-encode all user-controlled values before inserting them into page headings or other HTML elements.
-2. **Input Validation:** Validate and safely handle all GET parameters, including hidden or undocumented parameters such as `q`.
-3. **Content Security Policy:** Implement a restrictive CSP and avoid relying on blacklist-based filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
