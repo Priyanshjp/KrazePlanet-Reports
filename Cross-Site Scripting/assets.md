@@ -34,13 +34,13 @@ Screenshot 3 – Page source shows the injected payload inside the `data-query` 
 <img width="1918" height="970" alt="image" src="https://github.com/user-attachments/assets/d0d6f365-edc7-4913-aae2-a2de7b5efc46" />
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- **Arbitrary JavaScript Execution:** An attacker may execute JavaScript in a victim's browser through a crafted URL.
-- **Phishing and Content Manipulation:** An attacker may modify displayed page content or create deceptive elements.
-- **Victim-Targeted Attacks:** Crafted links may be distributed to users to trigger the reflected XSS when opened.
-   
+
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Apply proper HTML attribute encoding to the `p` parameter before inserting it into the `data-query` attribute.
-2. **Secure Output Handling:** Use `htmlspecialchars()` with appropriate encoding flags, such as `ENT_QUOTES | ENT_SUBSTITUTE`, and UTF-8 encoding.
-3. **Content Security Policy:** Implement a restrictive Content Security Policy and avoid relying on blacklist-based filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
