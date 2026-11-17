@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://pwnedbox.site/"><img src="https://pwnedbox.site/assets/github/krazeplanet-labs.png" alt="KrazePlanet Labs: free, hands-on web security labs" width="100%"></a>
+  <a href="https://pwnedbox.site/"><img src="https://pwnedbox.site/api/card.php?user=Priyanshxop" alt="KrazePlanet Labs: free, hands-on web security labs" width="100%"></a>
 </p>
 
 <h1 align="center">KrazePlanet Reports</h1>
@@ -23,7 +23,7 @@
 
 ## About
 
-Every `.md` file in this repository is one lab I solved. Each report covers:
+Every report is one lab I solved, in a folder for its bug type (for example `Cross-Site Scripting/`). Each report covers:
 
 - **The bug**: what the vulnerability is
 - **How I found it**: the steps to reproduce it
