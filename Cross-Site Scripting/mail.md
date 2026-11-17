@@ -13,7 +13,7 @@ The vulnerability occurs because user-controlled input is reflected into the res
 1. Open https://mail.pwnedbox.site/?cat=Priyanshxop%27%22%3C%3E%3CScRipT%3Ea\u006cert(1)%3C/ScRipT%3E.
 2. Use x8scan to identify the available GET parameters.
 3. Identify the `cat` parameter as the testing target.
-4. Inject the crafted XSS payload into the `cat` parameter.
+4. Inject the crafted XSS payload `Priyanshxop%27"<><ScRipT>a\u006cert(1)</ScRipT>` into the `cat` parameter.
 5. Load the modified URL in the browser.
 6. Observe the JavaScript alert displaying `1`.
 7. Inspect the page source to verify the reflected input.
