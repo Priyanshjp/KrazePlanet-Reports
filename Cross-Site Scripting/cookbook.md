@@ -8,12 +8,17 @@ The application is vulnerable to Reflected Cross-Site Scripting (XSS) through th
 
 ## Steps to Reproduce
 
-1. Open https://cookbook.pwnedbox.site/.
-2. Enter the following payload in the Last Name field: `Priyanshxop'"<><ScRipT>alert(1)</ScRipT>`
-3. Submit the form.
-4. Observe the JavaScript alert popup.
-5. Inspect the page source and verify that the payload is reflected in the `lname` parameter.
+## Steps to Reproduce
 
+1. Open the following crafted URL in a browser:
+
+   [`https://cookbook.pwnedbox.site/?lname=Priyanshxop%27%22%3C%3EScRipT%3Ealert%281%29%3C%2FScRipT%3E`](https://cookbook.pwnedbox.site/?fname=aa&lname=Priyanshxop%2527%22%3C%3E%3CScRipT%3Ea%5Cu006cert%281%29%3C%2FScRipT%3E)
+
+2. Allow the page to load with the crafted `lname` parameter.
+3. Observe the JavaScript alert displaying `1`.
+4. Click **OK** to dismiss the alert.
+5. Inspect the page source.
+6. Verify that the supplied payload is reflected through the `lname` parameter.
 ## POC (Proof of Concept)
 
 Screenshot 1 – Payload entered in the First Name and Last Name fields.
@@ -28,14 +33,15 @@ Screenshot 3 – Reflected payload visible in the HTML page source.
 
 <img width="1917" height="962" alt="image" src="https://github.com/user-attachments/assets/bd721903-d285-44a6-87e9-aeadc6045468" />
 
+
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- Execute JavaScript in a visitor's browser.
-- Manipulate webpage content and display malicious elements.
-- Conduct phishing attacks through specially crafted URLs.
-  
+
 ## Remediation
-
-1. **Output Encoding:** Apply context-aware HTML attribute encoding to user-controlled input.
-2. **Input Validation:** Validate and safely handle values received through GET parameters.
-3. **Secure Filtering:** Avoid blacklist-based filtering and implement a restrictive Content Security Policy (CSP).
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
