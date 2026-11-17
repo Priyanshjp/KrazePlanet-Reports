@@ -10,8 +10,6 @@ The `q` parameter was not directly visible in the form. After identifying it, a 
 
 ## Steps to Reproduce
 
-## Steps to Reproduce
-
 1. Run parameter discovery against `https://docs.pwnedbox.site/` using x8scan.
 2. Identify the additional GET parameter `q`.
 3. Open the following crafted URL in a browser:
