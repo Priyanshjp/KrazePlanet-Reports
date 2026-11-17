@@ -10,8 +10,6 @@ The application reflected the supplied values inside the HTML input elements wit
 
 ## Steps to Reproduce
 
-## Steps to Reproduce
-
 1. Open the following crafted URL in a browser:
 
    https://directory.pwnedbox.site/?fname=Priyanshxop&lname=Priyanshxop%27%22%3C%3E%3CScRipT%3Ealert%281%29%3C%2FScRipT%3E
