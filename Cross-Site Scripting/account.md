@@ -10,13 +10,14 @@ Source inspection revealed different output-handling behavior. The `fname` value
 
 ## Steps to Reproduce
 
-1. Open `https://account.pwnedbox.site/`.
-2. Locate the First Name and Last Name input fields.
-3. Enter the crafted payload `"><body onpageshow=/*x*/this['a'+'l'+'e'+'r'+'t'](1)//>` into both fields.
-4. Submit the form.
-5. Inspect the page source.
-6. Compare how the `fname` and `lname` values are reflected.
-7. Observe that `fname` is HTML-encoded while the `lname` payload is reflected without proper encoding.
+1. Open the following crafted URL in a browser:
+
+   `https://account.pwnedbox.site/?fname=%22%3E%3Cbody%20onpageshow%3D%2F*x*%2Fthis%5B%27a%27%2B%27l%27%2B%27e%27%2B%27r%27%2B%27t%27%5D(1)%2F%2F%3E&lname=%22%3E%3Cbody%20onpageshow%3D%2F*x*%2Fthis%5B%27a%27%2B%27l%27%2B%27e%27%2B%27r%27%2B%27t%27%5D(1)%2F%2F%3E`
+
+2. Allow the page to load with the crafted `fname` and `lname` values.
+3. Inspect the page source.
+4. Locate the reflected `fname` and `lname` parameters.
+5. Observe that `fname` is HTML-encoded, while `lname` is reflected without proper HTML encoding.
 
 ## POC (Proof of Concept)
 
