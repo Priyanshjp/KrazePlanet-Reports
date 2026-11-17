@@ -10,13 +10,16 @@ The application reflected the supplied values inside the HTML input elements wit
 
 ## Steps to Reproduce
 
-1. Open https://support.pwnedbox.site/.
-2. Locate the First Name and Last Name input fields.
-3. Enter the crafted payload `'"<><body onpageshow=alert(1)>` into both fields.
-4. Submit the form.
-5. Observe the JavaScript alert displaying `1`.
-6. Inspect the page source.
-7. Verify that the payload is reflected inside both input elements without proper HTML encoding.
+1. Open the following crafted URL in a browser:
+
+   https://support.pwnedbox.site/?fname=%27%22%3C%3E%3Cbody%20onpageshow%3Dalert(1)%3E&lname=%27%22%3C%3E%3Cbody%20onpageshow%3Dalert(1)%3E
+
+2. Allow the page to load with the crafted payload supplied through both parameters.
+3. Observe the JavaScript alert displaying `1`.
+4. Dismiss the alert.
+5. Inspect the page source.
+6. Locate the First Name and Last Name input elements.
+7. Verify that the supplied payload is reflected inside both input elements without proper HTML attribute encoding.
 
 
 ## POC (Proof of Concept)
@@ -33,14 +36,15 @@ Screenshot 3 – Page source confirms unescaped payload reflection in both `fnam
 
 <img width="1916" height="963" alt="image" src="https://github.com/user-attachments/assets/e8ddb56e-c7cb-4fec-8af0-864dca0e9da5" />
 
-## Impact
 
-- **Arbitrary JavaScript Execution:** An attacker may execute JavaScript in a victim's browser through a crafted URL.
-- **Phishing and Content Manipulation:** An attacker may manipulate page content or display deceptive elements.
-- **Victim-Targeted Attacks:** Crafted links may be distributed to users to trigger the reflected XSS when opened.
+## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
+
 
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Properly HTML-attribute-encode user-controlled values before inserting them into input elements.
-2. **Consistent Parameter Validation:** Apply secure validation and output encoding to both `fname` and `lname` parameters.
-3. **Content Security Policy:** Implement a restrictive Content Security Policy and avoid relying on blacklist-based HTML tag filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
