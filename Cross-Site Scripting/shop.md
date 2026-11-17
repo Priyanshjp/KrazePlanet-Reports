@@ -14,7 +14,7 @@ During testing, a crafted payload containing a mixed-case script tag and a Unico
 
 1. Open the following crafted URL in a browser:
 
-   `https://shop.pwnedbox.site/?category=all&sort=Priyanshxop%27%22%3E%3CScRipT%3Ea\u006cert(1)%3C/ScRipT%3E`
+   https://shop.pwnedbox.site/?category=all&sort=Priyanshxop%27%22%3E%3CScRipT%3Ea\u006cert(1)%3C/ScRipT%3E
 
 2. Observe the JavaScript alert displaying `1`.
 3. Dismiss the alert.
