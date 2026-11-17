@@ -10,13 +10,16 @@ The vulnerability occurs because user input is not safely encoded before being i
 
 ## Steps to Reproduce
 
-1. Open https://news.pwnedbox.site/.
-2. Identify the `title` GET parameter.
-3. Submit a crafted HTML payload `<!--></Title/</Textarea/</Script/</Iframe/><Details/Open/OnToggle=(confirm)(1)-->%5C` through the parameter.
-4. Load the modified URL in the browser.
-5. Observe the JavaScript confirmation dialog displaying `1`.
-6. Inspect the rendered page and its source code.
-7. Verify that the supplied input is reflected inside the HTML title element.
+1. Open the following crafted URL in a browser:
+
+   https://news.pwnedbox.site/?title=%27%22%3C!--%3E)%3C/Title/%3C/h1/%3C/h2/%3C/h3/%3C/h4/%3C/div/%3C/p/%3C/a/%3C/font/%3C/label/%3C/button/%3C/img/%3C/ul/%3C/ol/%3C/li/%3C/option/%3C/span/%3C/Style/%3C/Script/%3C/textArea/%3C/iFrame/%3C/noScript%3E%3CImg%20Src=OnXSS%20OnError=(confirm)(1)%3E)
+
+2. Allow the page to load with the crafted payload supplied through the `title` parameter.
+3. Observe the JavaScript confirmation dialog displaying `1`.
+4. Dismiss the confirmation dialog.
+5. Inspect the rendered page and its source code.
+6. Locate the HTML `<title>` element.
+7. Verify that the supplied input is reflected inside the title context without proper output encoding.
    
 ## POC (Proof of Concept)
 
@@ -42,13 +45,13 @@ Screenshot 5 – Page source showing the reflected payload inside the HTML title
 
 
 ## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
 
-- **Arbitrary JavaScript Execution:** An attacker may execute JavaScript in a victim's browser through a specially crafted URL.
-- **Phishing and UI Manipulation:** Malicious scripts may modify page content or display deceptive interfaces.
-- **Targeted Attacks:** Attackers may distribute crafted links to users and exploit the vulnerability when they visit the affected page.
-  
+
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Encode user-controlled input before inserting it into HTML elements, attributes, or other document contexts.
-2. **Input Validation:** Validate the `title` parameter and reject unexpected markup where HTML input is not required.
-3. **Content Security Policy:** Implement a restrictive CSP and avoid relying on blacklist-based HTML filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
