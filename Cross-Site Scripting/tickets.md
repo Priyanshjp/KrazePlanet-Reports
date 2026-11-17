@@ -10,13 +10,16 @@ Source inspection showed that the `fname` value was HTML-encoded, whereas the `l
 
 ## Steps to Reproduce
 
-1. Open https://tickets.pwnedbox.site/.
-2. Locate the First Name and Last Name input fields.
-3. Submit the crafted event-handler payload `"><body onpageshow=/*x*/this['a'+'l'+'e'+'r'+'t'](1)//>` through the GET parameters.
-4. Observe the JavaScript alert displaying `1`.
+1. Open the following crafted URL in a browser:
+
+   https://tickets.pwnedbox.site/?lname=%22%3E%3Cbody%20onpageshow%3D%2F*x*%2Fthis%5B%27a%27%2B%27l%27%2B%27e%27%2B%27r%27%2B%27t%27%5D(1)%2F%2F%3E
+
+2. Allow the Tickets page to load with the crafted payload supplied through the `lname` parameter.
+3. Observe the JavaScript alert displaying `1`.
+4. Dismiss the alert.
 5. Inspect the page source.
-6. Compare the output handling of `fname` and `lname`.
-7. Verify that the `lname` value is reflected without proper HTML attribute encoding.
+6. Compare how the `fname` and `lname` values are reflected in the HTML response.
+7. Verify that the `lname` value is reflected without proper HTML attribute encoding, while the `fname` value is encoded.
 
 ## POC (Proof of Concept)
 
@@ -32,14 +35,15 @@ Screenshot 3 – Page source showing encoded `fname` and unescaped event-handler
 
 <img width="1918" height="971" alt="image" src="https://github.com/user-attachments/assets/49259973-a9ab-46f1-80ff-bc58c60367eb" />
 
-## Impact
 
-- **Arbitrary JavaScript Execution:** An attacker may execute JavaScript in a victim's browser through a crafted URL.
-- **Phishing and Content Manipulation:** An attacker may modify displayed page content or create deceptive elements.
-- **Victim-Targeted Attacks:** Crafted links may be distributed to users to trigger the reflected XSS when opened.
+## Impact
+- It allows attackers to hijack user session
+- It potentially leads to full account takeover
+- It allows to perform  unauthorized actions within the vulnerable application
+
 
 ## Remediation
-
-1. **Context-Aware Output Encoding:** Apply proper HTML attribute encoding to all user-controlled values before inserting them into input elements.
-2. **Consistent Parameter Handling:** Ensure both `fname` and `lname` receive the same secure validation and output-encoding treatment.
-3. **Content Security Policy:** Implement a restrictive Content Security Policy and avoid relying on blacklist-based event-handler filtering as the primary XSS defense.
+- Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
+- Filter out JavaScript methods like: `alert()`, `confirm()`, `prompt()` so even if a tag slips through the method won't execute
+- If you're using PHP then use `htmlspecialchars()` function before rendering any user input back to the page
+- Use Cloudflare as they have so many WAF rules that almost all XSS payloads will be blocked automatically before even reaching the server
