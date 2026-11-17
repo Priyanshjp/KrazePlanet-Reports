@@ -8,8 +8,6 @@ The application is vulnerable to Reflected Cross-Site Scripting (XSS) through th
 
 ## Steps to Reproduce
 
-## Steps to Reproduce
-
 1. Open the following crafted URL in a browser:
 
    [`https://cookbook.pwnedbox.site/?lname=Priyanshxop%27%22%3C%3EScRipT%3Ealert%281%29%3C%2FScRipT%3E`](https://cookbook.pwnedbox.site/?fname=aa&lname=Priyanshxop%2527%22%3C%3E%3CScRipT%3Ea%5Cu006cert%281%29%3C%2FScRipT%3E)
