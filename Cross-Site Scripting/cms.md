@@ -22,7 +22,6 @@ The Quill CMS allows users to create and publish articles. The article editor ac
 7. Dismiss the dialog and inspect the published article using browser developer tools.
 8. Verify that the supplied payload is stored and rendered as part of the article.
 
-
 ## POC (Proof of Concept)
 
 Screenshot 1: The article editor exposes an HTML source editing option and states that content is rendered using innerHTML.
@@ -46,7 +45,6 @@ Screenshot 4: Developer tools show the published article and the stored payload 
 - It allows attackers to execute arbitrary JavaScript in the victim's browser within the context of the vulnerable application.
 - It may allow attackers to hijack user sessions, steal sensitive information accessible to the application, or potentially lead to account takeover.
 - It allows attackers to perform unauthorized actions on behalf of affected users, including modifying application data or abusing available account privileges.
-
 
 ## Remediation
 - Filter out HTML tags like: `<script>`, `<img>`, `<svg>` from the Report Name field before saving anything to the database
