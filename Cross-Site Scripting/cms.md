@@ -1,6 +1,5 @@
 ## Title
 Stored XSS - Shopify
-<!-- Write a short, clear title describing the vulnerability and where it was found. Example: Stored XSS in User Profile -->
 
 ## Description
 **Affected URL:** https://cms.pwnedbox.site/
