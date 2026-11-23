@@ -10,11 +10,7 @@ The Quill CMS allows users to create and publish articles. The article editor ac
 
 1. Log in to the CMS at `https://cms.pwnedbox.site/`.
 2. Navigate to the **Write** section and create a new article.
-3. Enter the following payload in the article title or HTML content field:
-
-   ```html
-   Priyansh"><><Img SrC=x OnErRoR=confirm(1)>
-
+3. Enter the following payload in the article title or HTML content field:`Priyansh"><><Img SrC=x OnErRoR=confirm(1)>`
 4. Publish the article.
 5. Navigate to the My Articles page.
 6. Observe that the JavaScript confirmation dialog appears with the value 1.
